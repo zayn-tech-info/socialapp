@@ -1,24 +1,30 @@
 import React, { useState } from "react";
 import useAuthStore from "../stores/useAuthStore";
 import AuthImagePattern from "../components/AuthImagePattern";
-
+import {
+  Eye,
+  EyeOff,
+  Loader2,
+  Lock,
+  Mail,
+  MessageSquare,
+  User,
+} from "lucide-react";
 import toast from "react-hot-toast";
-import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare, User } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isSigningUp, setIsSigningUp] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     username: "",
     password: "",
   });
   
-  const { signup } = useAuthStore();
+  const { signup, isSigningUp } = useAuthStore();
 
   const validateForm = () => {
-    if (!formData.username.trim()) return toast.error("Full name is required");
+    if (!formData.username.trim()) return toast.error("username is required");
     if (!formData.email.trim()) return toast.error("Email is required");
     if (!/\S+@\S+\.\S+/.test(formData.email))
       return toast.error("Invalid email format");
@@ -26,29 +32,25 @@ const SignUpPage = () => {
     if (formData.password.length < 6) {
       return toast.error("Password must be at least 6 characters");
     }
-
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const success = validateForm();
-
     if (success === true) {
-      setIsSigningUp(true);
-      signup(formData.email, formData.password, formData.username)
-        .then(() => {
-          setIsSigningUp(false);
-        })
-        .catch(() => {
-          setIsSigningUp(false);
-        });
+      try {
+        await signup(formData);
+        toast.success("Account created successfully");
+      } catch (error) {
+        toast.error(error?.response?.data?.message || "Signup failed");
+      }
     }
   };
 
   return (
     <>
-      <div className="min-h-screen grid lg:grid-cols-2">
+      <div className="h- grid lg:grid-cols-2">
         {/* left side */}
         <div className="flex flex-col justify-center items-center p-6 sm:p-12">
           <div className="w-full max-w-md space-y-8">
@@ -71,7 +73,7 @@ const SignUpPage = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-medium">Full Name</span>
+                  <span className="label-text font-medium">username</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -80,8 +82,8 @@ const SignUpPage = () => {
                   <input
                     type="text"
                     className={`input input-bordered w-full pl-10`}
-                    placeholder="John Doe"
-                    value={formData.fullName}
+                    placeholder="johndoe"
+                    value={formData.username}
                     onChange={(e) =>
                       setFormData({ ...formData, username: e.target.value })
                     }
@@ -120,7 +122,7 @@ const SignUpPage = () => {
                   <input
                     type={showPassword ? "text" : "password"}
                     className={`input input-bordered w-full pl-10`}
-                    placeholder="••••••••"
+                    placeholder="Enter your password"
                     value={formData.password}
                     onChange={(e) =>
                       setFormData({ ...formData, password: e.target.value })

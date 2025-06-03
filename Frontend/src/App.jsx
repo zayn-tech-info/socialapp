@@ -5,32 +5,25 @@ import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import SettingsPage from "./pages/SettingsPage";
-import HomePage from "./pages/HomePage"
-import auth
-import Toaster from "react-hot-toast"
-const App = () => {
+import HomePage from "./pages/HomePage";
+import useAuthStore from "./stores/useAuthStore";
 
+import { Toaster } from "react-hot-toast";
+
+const App = () => {
+  const { authUser } = useAuthStore();
   return (
     <>
-      <NavBar />
+      {/* <NavBar /> */}
       <Routes>
         <Route
           path="/"
           element={authUser ? <HomePage /> : <Navigate to="/login" />}
         />
-        <Route
-          path="/signup"
-          element={<SignUpPage />}
-        />
-        <Route
-          path="/login"
-          element={<LoginPage />}
-        />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/settings" element={<SettingsPage />} />
-        <Route
-          path="/profile"
-          element={<ProfilePage />}
-        />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
 
       <Toaster />
