@@ -3,22 +3,23 @@ import useAuthStore from "../stores/useAuthStore";
 import AuthImagePattern from "../components/AuthImagePattern";
 
 import toast from "react-hot-toast";
-import { Eye, EyeOff, Loader2, Mail, MessageSquare, User } from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare, User } from "lucide-react";
 import { Link } from "react-router-dom";
 
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isSigningUp, setIsSigningUp] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     username: "",
     password: "",
   });
-
-  const { signUp, isSigningUp } = useAuthStore();
+  
+  const { signup } = useAuthStore();
 
   const validateForm = () => {
-    if (!formData.fullName.trim()) return toast.error("Full name is required");
+    if (!formData.username.trim()) return toast.error("Full name is required");
     if (!formData.email.trim()) return toast.error("Email is required");
     if (!/\S+@\S+\.\S+/.test(formData.email))
       return toast.error("Invalid email format");
@@ -34,7 +35,16 @@ const SignUpPage = () => {
     e.preventDefault();
     const success = validateForm();
 
-    if (success === true) signUp(formData);
+    if (success === true) {
+      setIsSigningUp(true);
+      signup(formData.email, formData.password, formData.username)
+        .then(() => {
+          setIsSigningUp(false);
+        })
+        .catch(() => {
+          setIsSigningUp(false);
+        });
+    }
   };
 
   return (
@@ -74,7 +84,7 @@ const SignUpPage = () => {
                     placeholder="John Doe"
                     value={formData.fullName}
                     onChange={(e) =>
-                      setFormData({ ...formData, fullName: e.target.value })
+                      setFormData({ ...formData, username: e.target.value })
                     }
                   />
                 </div>
