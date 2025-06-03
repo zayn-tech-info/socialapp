@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import { Eye, EyeOff, Loader2, Mail, MessageSquare, User } from "lucide-react";
 import { Link } from "react-router-dom";
 
-
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
