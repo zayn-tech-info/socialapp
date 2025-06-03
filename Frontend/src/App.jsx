@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useAuthStore } from "../stores/useAuthStore";
+import  useAuthStore  from "./stores/useAuthStore";
 import { Loader } from "lucide-react";
 import NavBar from "./components/NavBar";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import SettingsPage from "./pages/SettingsPage";
 
+import Toaster from "react-hot-toast"
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
 
@@ -32,7 +33,7 @@ const App = () => {
         />
         <Route
           path="/signup"
-          element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
+          element={  <SignUpPage /> }
         />
         <Route
           path="/login"
@@ -44,6 +45,8 @@ const App = () => {
           element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
         />
       </Routes>
+
+      <Toaster />
     </>
   );
 };

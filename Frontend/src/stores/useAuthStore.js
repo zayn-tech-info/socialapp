@@ -2,7 +2,7 @@ import { Check } from "lucide-react";
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 
-export const useAuthStore = create((set) => ({
+const useAuthStore = create((set) => ({
   authUser: null,
   isSigningUp: false,
   isLoggingIn: false,
@@ -21,3 +21,6 @@ export const useAuthStore = create((set) => ({
     }
   },
 }));
+
+ 
+export default useAuthStore;
