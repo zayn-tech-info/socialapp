@@ -1,7 +1,7 @@
 import React from 'react'
 
 const SignUpPage = () => {
-  const [show]
+  const [showPasswor]
   return (
     <div>SignUpPage</div>
   )
