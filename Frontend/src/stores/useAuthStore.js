@@ -5,6 +5,7 @@ const useAuthStore = create((set) => ({
   authUser: null,
   user: null,
   loading: false,
+
   signup: async (data) => {
     set({ isSigningUp: true });
     try {
@@ -22,9 +23,11 @@ const useAuthStore = create((set) => ({
         email,
         password,
       });
+      set({ authUser: response.data });
       set({ user: response.data, loading: false });
       return response.data;
     } catch (error) {
+      set({authUser: null})
       set({ loading: false });
       throw error;
     }

@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import useAuthStore from "../stores/useAuthStore";
 import AuthImagePattern from "../components/AuthImagePattern";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 
 const LogInPage = () => {
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [formData, setFormData] = useState({
@@ -34,6 +36,7 @@ const LogInPage = () => {
         .then((data) => {
           Cookies.set("token", data.token);
           toast.success("Logged successfully");
+          navigate("/")
           setIsLoggingIn(false);
         })
         .catch((error) => {
