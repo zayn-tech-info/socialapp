@@ -14,7 +14,7 @@ const App = () => {
   const { authUser } = useAuthStore();
   return (
     <>
-      {/* <NavBar /> */}
+      <NavBar />
       <Routes>
         <Route
           path="/"
